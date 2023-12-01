@@ -1,0 +1,204 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class BlackJack {
+
+	Scanner scanner = new Scanner(System.in);
+	int sum = 0;
+	// To play Blackjack Create a deck of 52 cards
+	ArrayList deck = new ArrayList();
+
+	// To deal 2 cards to player
+	ArrayList playerCards = new ArrayList();
+	// To deal 2 cards to dealer
+	ArrayList dealerCards = new ArrayList();
+
+	public void play() {
+
+		// To create deck of 52 cards
+		createDeck();
+
+		// To print the deck out
+		// showDeck();
+
+		// Deal two cards to player
+		dealToPlayer();
+		dealToPlayer();
+
+		// Deal two cards to dealer
+		dealToDealer();
+		dealToDealer();
+
+		showPlayerCards();
+	    showDealerCards();
+
+		
+		while (true) {
+			System.out.println("Hit or Stay");
+			String choice = scanner.nextLine();
+			if (choice.toUpperCase().equals("STAY")) {
+				if (dealer_sum() >= calcPlayerSum())
+				{
+					System.out.println("Dealer Wins");
+				}
+				else {
+					System.out.println("Player Wins");
+					//System.exit(0);
+				}
+				
+				
+				break;
+			} else {
+			// if he hits
+
+			dealToPlayer();
+			
+		}
+			
+
+		    if (calcPlayerSum() > 21) {
+				System.out.println("Busted. Game over");
+				System.exit(0);
+
+			}
+			
+		}
+		calcPlayerSum();
+		calcDealerSum();
+		
+		
+//		while(true)
+//			{
+//			if(dealer_sum <16) {
+//			dealToDealer();
+//				//showDealerCard();
+//			}
+//	 
+//	if (dealer_sum() > 21) {
+//		System.out.println("Busted. Game over");
+//		//System.exit(0);
+//
+//	}
+//			}
+		
+	}
+
+	public int calcPlayerSum() {
+		// To add sum
+	
+		int sum =0;
+		for (int i = 0; i < playerCards.size(); i++) {
+			Card c = (Card) playerCards.get(i); // converting to card - casting it
+			 
+			sum += c.rank;
+			
+			System.out.println(c.rank);
+		//	if(c.rank>10) {
+				 
+		//		sum += 0;
+		//	}
+
+		}
+		System.out.println("\nSum for player is : " + sum);
+		return sum;
+
+	}
+	
+	public int calcDealerSum() {
+		// To add sum
+		
+		int sum =0;
+		for (int i = 0; i < dealerCards.size(); i++) {
+			Card c = (Card) dealerCards.get(i); // converting to card - casting it
+			 
+			sum += c.rank;
+			
+			System.out.println(c.rank);
+		//	if(c.rank>10) {
+				 
+		//		sum += 0;
+		//	}
+
+		}
+		System.out.println("\nSum for Dealer is : " + sum);
+		return sum;
+
+	}
+
+	public void createDeck() {
+		String[] suits = new String[] { "H", "D", "C", "S" };
+
+		for (int j = 0; j < 4; j++) {
+			for (int i = 1; i <= 10; i++) { // never use i<deck.size(); as size is 0 and for will never run so use 52
+				Card card = new Card();
+				card.suit = suits[j];
+				card.rank = i;
+
+				deck.add(card); // TO put the card in array
+
+			}
+ 
+		}
+		Collections.shuffle(deck); //TO jumple cards and then use it in the very end
+	}
+
+	
+	private void showDeck() {
+		for (int i = 0; i < deck.size(); i++) {
+			Card c = (Card) deck.get(i); // converting to card - casting it
+			System.out.println(i + ":" + c.suit + c.rank);
+		}
+	}
+
+	private void dealToPlayer() {
+		// Deal two cards to player
+
+		// TO take the card from deck of cards as we'll be
+		Card c = (Card) deck.remove(0); // Taken very bottom card
+		playerCards.add(c); // Giving that card to player
+	}
+
+	
+	int dealer_sum = 0;
+	public int dealer_sum() {
+		for(int i=0; i<dealerCards.size();i++) {
+			Card c = (Card) dealerCards.get(i);
+			if(c.rank > 10) {
+				dealer_sum = sum ;
+				
+			} else {
+				dealer_sum = sum + c.rank;
+			}
+		}
+		
+		return dealer_sum;
+	}
+	private void dealToDealer() {
+		// Deal two cards to dealer
+
+		// TO take the card from deck of cards as we'll be
+		Card c = (Card) deck.remove(0); // Taken very bottom card
+		dealerCards.add(c); // Giving that card to player
+	}
+
+	private void showDealerCards() {
+		System.out.println("Dealer card : ");
+		for (int i = 0; i < dealerCards.size(); i++) {
+			Card c = (Card) dealerCards.get(i); // converting to card - casting it
+			System.out.println(c.rank + " of " + c.suit);
+		}
+
+	}
+
+	private void showPlayerCards() {
+		System.out.println("Player card : ");
+		for (int i = 0; i < playerCards.size(); i++) {
+			Card c = (Card) playerCards.get(i); // converting to card - casting it
+			System.out.println(c.rank + " of " + c.suit);
+		}
+
+	}
+	 
+
+}
